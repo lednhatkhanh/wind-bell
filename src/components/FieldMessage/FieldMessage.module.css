@@ -1,0 +1,7 @@
+.fieldMessage {
+  @apply text-xs leading-none;
+}
+
+.isError {
+  @apply text-red-700;
+}

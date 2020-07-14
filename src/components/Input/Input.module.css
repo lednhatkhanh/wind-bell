@@ -1,0 +1,19 @@
+.input {
+  @apply border border-gray-400 px-2 py-1 text-sm rounded shadow-sm leading-none appearance-none text-gray-900 transition duration-150 ease-in-out bg-white block;
+
+  &:focus {
+    @apply outline-none shadow-outline;
+  }
+
+  &:disabled {
+    @apply bg-gray-200 text-gray-500 shadow-none;
+  }
+
+  &[aria-invalid='true'] {
+    @apply border-red-500;
+  }
+}
+
+.isFullWidth {
+  width: 100%;
+}

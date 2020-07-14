@@ -1,0 +1,15 @@
+.colorItem {
+  @apply select-none w-8 h-8 rounded-sm flex items-center justify-center;
+
+  &:focus {
+    @apply outline-none shadow-outline;
+  }
+
+  &:hover {
+    @apply opacity-75;
+  }
+}
+
+.checkIcon {
+  @apply text-white w-8 h-8;
+}

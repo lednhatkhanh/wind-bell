@@ -1,0 +1,62 @@
+.button {
+  @apply px-5 py-3 rounded font-semibold text-sm transition-all duration-150 ease-in-out leading-none select-none inline-flex items-center justify-center relative;
+
+  &:focus {
+    @apply outline-none shadow-outline;
+  }
+
+  &:disabled {
+    @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+
+    &:active {
+      @apply bg-gray-300;
+    }
+  }
+
+  &[aria-busy='true'] {
+    @apply cursor-default bg-gray-300;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &:hover {
+      @apply bg-gray-300;
+    }
+  }
+}
+
+.isPrimary {
+  @apply bg-yellow-500 text-gray-900;
+
+  &:hover {
+    @apply bg-yellow-400 text-gray-900;
+  }
+
+  &:active {
+    @apply bg-yellow-600 text-gray-900;
+  }
+}
+
+.isDefault {
+  @apply bg-gray-400;
+
+  &:hover {
+    @apply bg-gray-300;
+  }
+
+  &:active {
+    @apply bg-gray-500;
+  }
+}
+
+.spinner {
+  @apply w-5 h-5 text-gray-500;
+}
+
+.spinnerContainer {
+  @apply absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

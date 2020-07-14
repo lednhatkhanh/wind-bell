@@ -1,0 +1,7 @@
+.listItemIcon {
+  @apply text-gray-700;
+
+  & > svg {
+    @apply w-6 h-6;
+  }
+}

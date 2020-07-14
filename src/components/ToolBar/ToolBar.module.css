@@ -1,0 +1,3 @@
+.toolBar {
+  @apply mx-auto flex h-full items-center;
+}
