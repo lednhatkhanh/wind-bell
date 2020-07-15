@@ -1,0 +1,9 @@
+.listItemText {
+  @apply whitespace-no-wrap overflow-hidden;
+  text-overflow: ellipsis;
+  max-width: 15rem;
+}
+
+.isInset {
+  padding-left: 2rem;
+}

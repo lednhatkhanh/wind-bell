@@ -28,26 +28,27 @@ export const Modal: React.FC<ModalProps> = ({
   const modalContentRef = React.useRef<HTMLDivElement | null>(null);
 
   const handleClose = React.useCallback(() => {
-    onClose();
-  }, [onClose]);
+    if (isOpen) {
+      onClose();
+    }
+  }, [onClose, isOpen]);
 
   const handleKeyDown = React.useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
+      if (event.key === 'Escape') {
         handleClose();
       }
     },
-    [handleClose, isOpen],
+    [handleClose],
   );
 
   const handleClickOutside = React.useCallback(
     (event: MouseEvent) => {
-      if (isOpen && modalContentRef.current && !modalContentRef.current.contains(event.target as HTMLElement)) {
-        console.log(modalContentRef.current);
+      if (!modalContentRef.current?.contains(event.target as HTMLElement)) {
         handleClose();
       }
     },
-    [handleClose, isOpen],
+    [handleClose],
   );
 
   const handleModalContentRefs = (instance: HTMLDivElement | null) => {

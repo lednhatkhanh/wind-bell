@@ -5,15 +5,26 @@ import { OverridableComponentProps } from '../common';
 
 import listItemClasses from './ListItem.module.css';
 
-export type ListItemProps<Component extends React.ElementType = 'li'> = OverridableComponentProps<Component>;
+type BaseProps = {
+  hasDivider?: boolean;
+};
+export type ListItemProps<Component extends React.ElementType = 'li'> = OverridableComponentProps<Component, BaseProps>;
 
-export const ListItem: React.FC<ListItemProps<'li'>> = React.forwardRef(function ListItem(
-  { className, children, tabIndex = 0, ...rest },
+export const ListItem = React.forwardRef<HTMLLIElement, ListItemProps<'li'>>(function ListItem(
+  { className, children, tabIndex = 0, hasDivider, component, ...rest },
   ref,
 ) {
+  const Component = component ?? 'li';
   return (
-    <li {...rest} className={clsx(listItemClasses.listItem, className)} tabIndex={tabIndex} ref={ref}>
+    <Component
+      {...rest}
+      className={clsx(listItemClasses.listItem, hasDivider && listItemClasses.hasDivider, className)}
+      tabIndex={tabIndex}
+      ref={ref}
+    >
       {children}
-    </li>
+    </Component>
   );
-});
+}) as <Component extends React.ElementType = 'li'>(
+  props: ListItemProps<Component>,
+) => React.ReactElement<ListItemProps<Component>>;

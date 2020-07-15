@@ -36,5 +36,5 @@ export default {
     }),
   ],
 
-  external: ['react', 'react-dom', 'framer-motion'],
+  external: ['react', 'react-dom', 'framer-motion', '@popperjs/core', 'clsx', 'react-popper'],
 };

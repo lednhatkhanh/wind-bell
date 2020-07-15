@@ -5,7 +5,7 @@ import { ExtendableComponentProps } from '../common';
 
 import spinnerClasses from './Spinner.module.css';
 
-type SpinnerProps = ExtendableComponentProps<'svg', unknown>;
+type SpinnerProps = ExtendableComponentProps<'svg'>;
 export const Spinner: React.FC<SpinnerProps> = React.forwardRef(function Spinner({ className, ...rest }, ref) {
   return (
     <svg

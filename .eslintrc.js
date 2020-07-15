@@ -61,7 +61,12 @@ module.exports = {
     'import/no-unresolved': 'off',
 
     // react hooks
-    'react-hooks/exhaustive-deps': 'error',
+    'react-hooks/exhaustive-deps': [
+      'error',
+      {
+        additionalHooks: '(useEnhancedEffect)',
+      },
+    ],
 
     // jest
     'jest/consistent-test-it': [

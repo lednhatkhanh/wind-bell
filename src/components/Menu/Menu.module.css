@@ -1,0 +1,8 @@
+.menu {
+  @apply bg-white shadow-lg rounded py-2 overflow-y-auto;
+  max-height: 11.25rem;
+
+  &:focus {
+    @apply outline-none;
+  }
+}
