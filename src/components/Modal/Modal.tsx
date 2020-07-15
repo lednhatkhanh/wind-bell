@@ -6,6 +6,7 @@ import { Portal } from '../Portal';
 
 import { ModalOverlay, ModalOverlayProps } from './ModalOverlay';
 import { ModalContent, ModalContentProps } from './ModalContent';
+import { useEnhancedEffect, useScrollbarWidth } from '../../hooks';
 
 type BaseProps = {
   'aria-labelledby': string;
@@ -26,6 +27,7 @@ export const Modal: React.FC<ModalProps> = ({
   ...rest
 }) => {
   const modalContentRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollBarWidth = useScrollbarWidth();
 
   const handleClose = React.useCallback(() => {
     if (isOpen) {
@@ -75,6 +77,18 @@ export const Modal: React.FC<ModalProps> = ({
       }
     };
   }, [handleClickOutside, handleKeyDown]);
+
+  useEnhancedEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (isOpen) {
+        document.body.classList.add('overflow-hidden');
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+      } else {
+        document.body.classList.remove('overflow-hidden');
+        document.body.style.paddingRight = '0px';
+      }
+    }
+  }, [scrollBarWidth, isOpen]);
 
   return (
     <Portal>

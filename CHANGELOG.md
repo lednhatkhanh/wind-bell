@@ -1,5 +1,11 @@
 # @lednhatkhanh/wind-bell-components
 
+## 0.0.6
+
+### Patch Changes
+
+- Fix Modal flickering
+
 ## 0.0.5
 
 ### Patch Changes
