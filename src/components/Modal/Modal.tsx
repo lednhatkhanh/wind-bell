@@ -1,16 +1,18 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { useScrollbarWidth, useEnhancedEffect } from '../../hooks';
 import { ExtendableComponentProps } from '../common';
 import { Portal } from '../Portal';
-import { ModalOverlay } from './ModalOverlay';
-import { ModalContent } from './ModalContent';
+
+import { ModalOverlay, ModalOverlayProps } from './ModalOverlay';
+import { ModalContent, ModalContentProps } from './ModalContent';
 
 type BaseProps = {
   'aria-labelledby': string;
   isOpen: boolean;
   onClose: () => void;
+  ModalContent?: ModalContentProps;
+  ModalOverlay?: ModalOverlayProps;
 };
 export type ModalProps = ExtendableComponentProps<'div', BaseProps>;
 
@@ -20,15 +22,13 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   className,
+  ModalContent: modalContentProps = {},
   ...rest
 }) => {
-  const scrollBarWidth = useScrollbarWidth();
   const modalContentRef = React.useRef<HTMLDivElement | null>(null);
-  const [animationCompleted, setAnimationCompleted] = React.useState(false);
 
   const handleClose = React.useCallback(() => {
     onClose();
-    setAnimationCompleted(false);
   }, [onClose]);
 
   const handleKeyDown = React.useCallback(
@@ -42,62 +42,38 @@ export const Modal: React.FC<ModalProps> = ({
 
   const handleClickOutside = React.useCallback(
     (event: MouseEvent) => {
-      if (
-        isOpen &&
-        animationCompleted &&
-        event.target &&
-        !modalContentRef.current?.contains(event.target as HTMLElement)
-      ) {
+      if (isOpen && modalContentRef.current && !modalContentRef.current.contains(event.target as HTMLElement)) {
+        console.log(modalContentRef.current);
         handleClose();
       }
     },
-    [isOpen, animationCompleted, handleClose],
+    [handleClose, isOpen],
   );
 
-  const handleAnimationComplete = React.useCallback(() => {
-    setAnimationCompleted(true);
-  }, []);
+  const handleModalContentRefs = (instance: HTMLDivElement | null) => {
+    modalContentRef.current = instance;
 
-  React.useEffect(() => {
-    if (isOpen) {
-      setAnimationCompleted(false);
+    const { ref: modalContentPropRef } = modalContentProps;
+    if (typeof modalContentPropRef === 'function') {
+      modalContentPropRef(instance);
+    } else if (modalContentPropRef) {
+      (modalContentPropRef as React.MutableRefObject<HTMLDivElement | null>).current = instance;
     }
-  }, [isOpen]);
+  };
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('click', handleClickOutside);
+      window.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       if (typeof window !== 'undefined') {
         window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('click', handleClickOutside);
+        window.removeEventListener('mousedown', handleClickOutside);
       }
     };
   }, [handleClickOutside, handleKeyDown]);
-
-  useEnhancedEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hasScrollbar = document.body.scrollHeight > document.body.offsetHeight;
-
-      if (!hasScrollbar) {
-        return;
-      }
-
-      if (isOpen) {
-        document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = `${scrollBarWidth}px`;
-
-        modalContentRef.current?.focus();
-      } else {
-        document.body.classList.remove('overflow-hidden');
-        document.body.style.paddingRight = '0px';
-        document.body.style.overflow = 'auto';
-      }
-    }
-  }, [isOpen, scrollBarWidth]);
 
   return (
     <Portal>
@@ -108,14 +84,14 @@ export const Modal: React.FC<ModalProps> = ({
             animate={overlayAnimate}
             exit={overlayExitAnimate}
             {...(rest as unknown)}
-            onAnimationComplete={handleAnimationComplete}
             className={className}
           >
             <MotionModalContent
               initial={contentExitAnimate}
               animate={contentAnimate}
               exit={contentExitAnimate}
-              ref={modalContentRef}
+              {...(modalContentProps as unknown)}
+              ref={handleModalContentRefs}
               aria-labelledby={ariaLabelledBy}
             >
               {children}
