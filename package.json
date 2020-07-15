@@ -23,6 +23,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "changeset": "changeset",
+    "release": "changeset publish",
+    "version": "changeset version",
     "lint": "eslint --ext .ts,.tsx src"
   },
   "repository": {
