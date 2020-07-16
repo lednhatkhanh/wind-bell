@@ -2,27 +2,25 @@ import ts from '@wessberg/rollup-plugin-ts';
 import postcss from 'rollup-plugin-postcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssImport from 'postcss-import';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import tailwindcss from 'tailwindcss';
+import { terser } from 'rollup-plugin-terser';
+import pkg from './package.json';
 
 export default {
   input: 'src/index.ts',
 
   output: [
     {
-      file: 'build/wind-bell.cjs.js',
+      file: pkg.main,
       format: 'cjs',
     },
     {
-      file: 'build/wind-bell.esm.js',
+      file: pkg.module,
       format: 'esm',
     },
   ],
 
   plugins: [
-    nodeResolve({
-      browser: true,
-    }),
     postcss({
       extract: 'wind-bell.css',
       autoModules: true,
@@ -32,8 +30,8 @@ export default {
     }),
     ts({
       transpiler: 'babel',
-      transpileOnly: true,
     }),
+    terser(),
   ],
 
   external: ['react', 'react-dom', 'framer-motion', '@popperjs/core', 'clsx', 'react-popper'],
