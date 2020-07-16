@@ -1,5 +1,11 @@
 # @lednhatkhanh/wind-bell-components
 
+## 0.0.9
+
+### Patch Changes
+
+- Add IconButton
+
 ## 0.0.8
 
 ### Patch Changes

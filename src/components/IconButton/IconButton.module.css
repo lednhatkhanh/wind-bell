@@ -1,0 +1,23 @@
+.iconButton {
+  @apply px-1 py-1 text-gray-700 transition-all duration-150 ease-in-out select-none inline-block rounded-sm;
+
+  &:hover {
+    @apply text-gray-600;
+  }
+
+  &:focus {
+    @apply outline-none shadow-outline;
+  }
+
+  &:active {
+    @apply text-gray-800;
+  }
+
+  &:disabled {
+    @apply text-gray-400 cursor-not-allowed;
+
+    &:active {
+      @apply text-gray-300;
+    }
+  }
+}
