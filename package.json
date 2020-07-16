@@ -1,6 +1,6 @@
 {
   "name": "@lednhatkhanh/wind-bell-components",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "My React components set",
   "main": "build/wind-bell.cjs.js",
   "module": "build/wind-bell.esm.js",

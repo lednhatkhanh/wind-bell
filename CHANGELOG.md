@@ -1,5 +1,11 @@
 # @lednhatkhanh/wind-bell-components
 
+## 0.0.11
+
+### Patch Changes
+
+- Fix types
+
 ## 0.0.10
 
 ### Patch Changes
