@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useEventListener, usePreventScroll } from '../../hooks';
 import { ExtendableComponentProps } from '../common';
 import { Portal } from '../Portal';
 
 import { ModalOverlay, ModalOverlayProps } from './ModalOverlay';
 import { ModalContent, ModalContentProps } from './ModalContent';
-import { useEnhancedEffect, useScrollbarWidth } from '../../hooks';
 
 type BaseProps = {
   'aria-labelledby': string;
@@ -26,8 +26,8 @@ export const Modal: React.FC<ModalProps> = ({
   ModalContent: modalContentProps = {},
   ...rest
 }) => {
+  usePreventScroll(isOpen);
   const modalContentRef = React.useRef<HTMLDivElement | null>(null);
-  const scrollBarWidth = useScrollbarWidth();
 
   const handleClose = React.useCallback(() => {
     if (isOpen) {
@@ -43,6 +43,7 @@ export const Modal: React.FC<ModalProps> = ({
     },
     [handleClose],
   );
+  useEventListener('keydown', handleKeyDown);
 
   const handleClickOutside = React.useCallback(
     (event: MouseEvent) => {
@@ -52,6 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
     },
     [handleClose],
   );
+  useEventListener('mousedown', handleClickOutside);
 
   const handleModalContentRefs = (instance: HTMLDivElement | null) => {
     modalContentRef.current = instance;
@@ -63,32 +65,6 @@ export const Modal: React.FC<ModalProps> = ({
       (modalContentPropRef as React.MutableRefObject<HTMLDivElement | null>).current = instance;
     }
   };
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('mousedown', handleClickOutside);
-      }
-    };
-  }, [handleClickOutside, handleKeyDown]);
-
-  useEnhancedEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (isOpen) {
-        document.body.classList.add('overflow-hidden');
-        document.body.style.paddingRight = `${scrollBarWidth}px`;
-      } else {
-        document.body.classList.remove('overflow-hidden');
-        document.body.style.paddingRight = '0px';
-      }
-    }
-  }, [scrollBarWidth, isOpen]);
 
   return (
     <Portal>

@@ -24,7 +24,7 @@ describe('<Button />', () => {
   test('should render loading button', () => {
     const onClick = jest.fn();
     const { getByText, getByTestId } = render(
-      <Button aria-busy onClick={onClick}>
+      <Button loading onClick={onClick}>
         Loading button
       </Button>,
     );
@@ -51,8 +51,10 @@ describe('<Button />', () => {
     );
 
     const childSpan = getByText('Disabled button');
+    const button = childSpan.closest('button');
 
-    expect(childSpan.closest('button')).toBeDisabled();
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-disabled', 'true');
 
     fireEvent.click(childSpan);
     expect(onClick).toHaveBeenCalledTimes(0);

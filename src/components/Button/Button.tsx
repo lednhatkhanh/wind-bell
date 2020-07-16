@@ -8,7 +8,7 @@ import buttonClasses from './Button.module.css';
 
 type BaseProps = {
   colorScheme?: 'primary' | 'default';
-  ['aria-busy']?: boolean;
+  loading?: boolean;
 };
 export type ButtonProps<Component extends React.ElementType = 'button'> = OverridableComponentProps<
   Component,
@@ -18,7 +18,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps<'button'>>
   {
     component,
     colorScheme = 'default',
-    ['aria-busy']: ariaBusy = false,
+    loading = false,
+    disabled = false,
     className,
     children,
     onClick,
@@ -29,7 +30,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps<'button'>>
 ) {
   const Component = component ?? 'button';
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (ariaBusy) {
+    if (loading) {
       return;
     }
 
@@ -47,12 +48,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps<'button'>>
         { default: buttonClasses.isDefault, primary: buttonClasses.isPrimary }[colorScheme],
         className,
       )}
-      aria-busy={ariaBusy}
-      tabIndex={ariaBusy ? -1 : tabIndex}
+      aria-busy={loading}
+      aria-disabled={disabled}
+      disabled={disabled}
+      tabIndex={loading ? -1 : tabIndex}
       onClick={handleClick}
     >
-      <span className={clsx(ariaBusy && 'invisible')}>{children}</span>
-      {ariaBusy && (
+      <span className={clsx(loading && 'invisible')}>{children}</span>
+      {loading && (
         <div className={buttonClasses.spinnerContainer} data-testid="spinner">
           <Spinner className={buttonClasses.spinner} />
         </div>
