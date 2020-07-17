@@ -37,8 +37,7 @@
   "homepage": "https://github.com/lednhatkhanh/wind-bell-components#readme",
   "peerDependencies": {
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "framer-motion": "^2.0.0"
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -74,7 +73,6 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
-    "framer-motion": "^2.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.1.0",
     "npm-run-all": "^4.1.5",
@@ -96,6 +94,7 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "@popperjs/core": "^2.4.4",
-    "react-popper": "^2.2.3"
+    "react-popper": "^2.2.3",
+    "framer-motion": "^2.0.0"
   }
 }
