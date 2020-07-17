@@ -2,6 +2,7 @@ import React from 'react';
 import { usePopper } from 'react-popper';
 import clsx from 'clsx';
 import { Placement } from '@popperjs/core';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { OverridableComponentProps } from '../common';
 import { Portal } from '../Portal';
@@ -97,6 +98,10 @@ export const Menu: React.FC<MenuProps> = ({
   );
   useEventListener('keydown', handleKeyDown);
 
+  const handleMenuRef = (instance: HTMLUListElement | null) => {
+    setMenuRef(instance);
+  };
+
   useEnhancedEffect(() => {
     if (isOpen) {
       itemRefs.current[hoveringIndex]?.focus();
@@ -105,19 +110,28 @@ export const Menu: React.FC<MenuProps> = ({
 
   return (
     <Portal>
-      {isOpen && (
-        <List
-          {...rest}
-          className={clsx(menuClasses.menu, className)}
-          ref={setMenuRef}
-          style={styles.popper}
-          tabIndex={tabIndex}
-          {...attributes.popper}
-          role="menu"
-        >
-          {items}
-        </List>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <MotionList
+            {...(rest as unknown)}
+            initial={listExitAnimate}
+            animate={listAnimate}
+            exit={listExitAnimate}
+            className={clsx(menuClasses.menu, className)}
+            ref={handleMenuRef}
+            style={styles.popper}
+            tabIndex={tabIndex}
+            {...attributes.popper}
+            role="menu"
+          >
+            {items}
+          </MotionList>
+        )}
+      </AnimatePresence>
     </Portal>
   );
 };
+
+const MotionList = motion.custom(List);
+const listExitAnimate = { opacity: 0 };
+const listAnimate = { opacity: 1 };
